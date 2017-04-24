@@ -39,12 +39,16 @@ defmodule PCAPredict.Client do
   def request(endpoint, body \\ %{})
 
   def request(endpoint, %{key: _} = params) do
-    PCAPredict.Client.get!(
+    PCAPredict.Client.get(
       endpoint,
       [],
       params: params,
       ssl: [versions: [:"tlsv1.2"]]
-    ).body
+    )
+    |> case do
+      {:ok, response} -> response.body
+      {:error, error} -> {:error, error.reason, nil}
+    end
   end
 
   def request(endpoint, params) do

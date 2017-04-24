@@ -38,4 +38,11 @@ defmodule PCAPredict.AddressValidationTest do
     {:error, error, _resolution} = PCAPredict.AddressValidation.lookup("")
     assert error == "Text or Container Required"
   end
+
+  test "request will handle PCA Predict being down", %{bypass: bypass} do
+    Bypass.down(bypass)
+
+    {:error, error, _resolution} = PCAPredict.AddressValidation.lookup("")
+    assert error == :econnrefused
+  end
 end
