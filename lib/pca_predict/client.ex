@@ -24,21 +24,6 @@ defmodule PCAPredict.Client do
     |> parse_response
   end
 
-  defp process_error_response(body) do
-    Poison.decode!(body)
-
-    #body
-    #|> xmap(
-    #  error: [
-    #    ~x"//Table/Row"e,
-    #    error: ~x"./Error/text()"s,
-    #    description: ~x"./Description/text()"s,
-    #    cause: ~x"./Cause/text()"s,
-    #    resolution: ~x"./Resolution/text()"s,
-    #  ]
-    #)
-  end
-
   defp parse_response(%{"Items" => [%{"Error" => _error}]} = json) do
     error_cause =
       json["Items"]
