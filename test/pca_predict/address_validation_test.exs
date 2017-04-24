@@ -1,18 +1,41 @@
 defmodule PCAPredict.AddressValidationTest do
   use ExUnit.Case
+  doctest PCAPredict
 
-  test "request to a valid endpoint returns a valid response" do
-    %{results: results} = PCAPredict.AddressValidation.lookup("HU1 1UU")
-    assert results |> Enum.count == 1
+  alias PCAPredict.Support.CaptureJsonResponse
+
+  setup do
+    bypass = PCAPredict.Support.Bypass.setup_and_open
+    {:ok, bypass: bypass}
   end
 
-  test "request to a valid endpoint returns a valid multiple response" do
-    %{results: results} = PCAPredict.AddressValidation.lookup("WR2 6NJ")
-    assert results |> Enum.count == 2
+  test "request with a valid postcode returns a valid response", %{bypass: bypass} do
+    Bypass.expect bypass, fn conn ->
+      assert "/Capture/Interactive/Find/v1.00/json3ex.ws" == conn.request_path
+      assert "GET" == conn.method
+      Plug.Conn.resp(conn, 200, CaptureJsonResponse.find_response_with_postcode_objects)
+    end
+    {:ok, json} = PCAPredict.AddressValidation.lookup("WR2 6NJ")
+    assert json |> Enum.count == 2
   end
 
-  test "request to an invalid endpoint returns a valid response" do
-    %{error: error} = PCAPredict.AddressValidation.lookup("")
-    assert error == %{cause: "The Text or Container parameters were not supplied.", description: "Text or Container Required", error: "1001", resolution: "Check they were supplied and try again."}
+  test "request with an invalid key returns an error object", %{bypass: bypass} do
+    Bypass.expect bypass, fn conn ->
+      assert "/Capture/Interactive/Find/v1.00/json3ex.ws" == conn.request_path
+      assert "GET" == conn.method
+      Plug.Conn.resp(conn, 200, CaptureJsonResponse.invalid_key_response)
+    end
+    {:error, error, _resolution} = PCAPredict.AddressValidation.lookup("")
+    assert error == "Unknown key"
+  end
+
+  test "request to an invalid postcode returns a error response", %{bypass: bypass} do
+    Bypass.expect bypass, fn conn ->
+      assert "/Capture/Interactive/Find/v1.00/json3ex.ws" == conn.request_path
+      assert "GET" == conn.method
+      Plug.Conn.resp(conn, 200, CaptureJsonResponse.invalid_text_response)
+    end
+    {:error, error, _resolution} = PCAPredict.AddressValidation.lookup("")
+    assert error == "Text or Container Required"
   end
 end
