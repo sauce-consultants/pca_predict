@@ -29,7 +29,8 @@ defmodule PCAPredict.Mixfile do
   defp deps do
     [
       {:httpoison, "~> 0.11.1"},
-      {:sweet_xml, "~> 0.6.5"}
+      {:poison, "~> 3.1"},
+      {:bypass, "~> 0.6.0", only: :test}
     ]
   end
 end
