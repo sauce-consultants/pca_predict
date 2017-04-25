@@ -1,4 +1,9 @@
 defmodule PCAPredict.AddressValidation do
+  @moduledoc """
+  Capture Interactive Find (v1.00)
+
+  Is used to lookup locations and places
+  """
 
   def lookup(text, options \\ %{additional_lookup: false}) do
     PCAPredict.Client.request("/Capture/Interactive/Find/v1.00/json3ex.ws",

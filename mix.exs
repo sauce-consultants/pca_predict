@@ -8,7 +8,12 @@ defmodule PCAPredict.Mixfile do
      elixirc_paths: elixirc_paths(Mix.env),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps()]
+     description: description(),
+     package: package(),
+     deps: deps(),
+     name: "PCA Predict",
+     source_url: "https://github.com/sauce-consultants/pca_predict",
+   ]
   end
 
   # Configuration for the OTP application
@@ -16,6 +21,24 @@ defmodule PCAPredict.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [applications: [:logger, :httpoison]]
+  end
+
+  defp description do
+    """
+    A PCA Predict API wrapper for Elixir.
+    """
+  end
+
+
+  defp package do
+    # These are the default files included in the package
+    [
+      name: :pca_predict,
+      files: ["lib", "mix.exs", "README*", "LICENSE*"],
+      maintainers: ["John Polling", "Matt Weldon"],
+      licenses: ["CC0-1.0"],
+      links: %{"GitHub" => "https://github.com/sauce-consultants/pca_predict"}
+    ]
   end
 
   # Dependencies can be Hex packages:
