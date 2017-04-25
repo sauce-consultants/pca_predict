@@ -7,6 +7,8 @@ defmodule PCAPredict.Client do
   use Application
   use HTTPoison.Base
 
+  alias PCAPredict.{Error, Item}
+
   def start(_type, _args) do
     PCAPredict.Supervisor.start_link
   end
@@ -24,14 +26,24 @@ defmodule PCAPredict.Client do
     |> parse_response
   end
 
-  defp parse_response(%{"Items" => [%{"Error" => _error}]} = json) do
-    error_cause =
-      json["Items"]
-      |> Enum.at(0)
-    {:error, error_cause["Description"], error_cause["Resolution"]}
+  defp parse_response(%{"Items" => [%{"Error" => _error}] = errors}) do
+    data =
+      errors
+      |> Enum.map(fn(item) ->
+        Error.new(item)
+      end)
+
+    {:error, data}
   end
-  defp parse_response(%{"Items" => results}), do:
-    {:ok, results}
+  defp parse_response(%{"Items" => items}) do
+    data =
+      items
+      |> Enum.map(fn(item) ->
+        Item.new(item)
+      end)
+
+    {:ok, data}
+  end
 
   @doc """
   Boilerplate code to make requests.
@@ -47,7 +59,7 @@ defmodule PCAPredict.Client do
     )
     |> case do
       {:ok, response} -> response.body
-      {:error, error} -> {:error, error.reason, nil}
+      {:error, error} -> {:error, error.reason}
     end
   end
 
