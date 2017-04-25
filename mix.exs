@@ -31,6 +31,7 @@ defmodule PCAPredict.Mixfile do
     [
       {:httpoison, "~> 0.11.1"},
       {:poison, "~> 3.1"},
+      {:exconstructor, "~> 1.1"},
       {:bypass, "~> 0.6.0", only: :test}
     ]
   end
