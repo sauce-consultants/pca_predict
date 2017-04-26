@@ -8,7 +8,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
   1. Add `pca_predict` to your list of dependencies in `mix.exs`:
 
-    ```elixir
+    ```
     def deps do
       [{:pca_predict, "~> 0.1.0"}]
     end
@@ -16,7 +16,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
   2. Ensure `pca_predict` is started before your application:
 
-    ```elixir
+    ```
     def application do
       [applications: [:pca_predict]]
     end
