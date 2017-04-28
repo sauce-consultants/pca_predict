@@ -20,7 +20,7 @@ defmodule PCAPredict.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :httpoison]]
+    [applications: [:logger, :httpoison, :poison, :exconstructor]]
   end
 
   defp description do
