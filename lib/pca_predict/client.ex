@@ -44,6 +44,9 @@ defmodule PCAPredict.Client do
 
     {:ok, data}
   end
+  defp parse_response(data) do
+    {:ok, data}
+  end
 
   @doc """
   Boilerplate code to make requests.
