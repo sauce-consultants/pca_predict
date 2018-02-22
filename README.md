@@ -10,7 +10,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
     ```
     def deps do
-      [{:pca_predict, "~> 0.1.0"}]
+      [{:pca_predict, "~> 0.2.0"}]
     end
     ```
 
