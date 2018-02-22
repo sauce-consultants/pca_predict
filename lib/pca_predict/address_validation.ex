@@ -5,12 +5,14 @@ defmodule PCAPredict.AddressValidation do
   Is used to lookup locations and places
   """
 
+  @spec lookup(String.t, Map.t) :: {:ok, List.t} | {:ok, Map.t} | {:error, List.t}
   def lookup(text, options \\ %{additional_lookup: false}) do
     PCAPredict.Client.request("/Capture/Interactive/Find/v1.00/json3ex.ws",
                           %{text: text})
     |> process_response(options)
   end
 
+  @spec lookup_container(String.t) :: {:ok, List.t} | {:ok, Map.t} | {:error, List.t}
   def lookup_container(container) do
     PCAPredict.Client.request("/Capture/Interactive/Find/v1.00/json3ex.ws",
                           %{container: container})
