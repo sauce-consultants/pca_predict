@@ -35,7 +35,7 @@ defmodule PCAPredict.Client do
 
     {:error, data}
   end
-  defp parse_response(%{"Items" => %{"Accuracy" => _accuracy} = items}) do
+  defp parse_response(%{"Items" => [%{"Accuracy" => _accuracy}] = items}) do
     data =
       items
       |> Enum.map(fn(item) ->
