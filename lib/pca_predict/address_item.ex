@@ -1,4 +1,4 @@
-defmodule PCAPredict.Item do
+defmodule PCAPredict.AddressItem do
   @moduledoc """
   Struct for items returned from the API
 

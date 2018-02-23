@@ -7,7 +7,7 @@ defmodule PCAPredict.Client do
   use Application
   use HTTPoison.Base
 
-  alias PCAPredict.{Error, Item}
+  alias PCAPredict.{Error, AddressItem, GeocodeItem}
 
   def start(_type, _args) do
     PCAPredict.Supervisor.start_link
@@ -35,11 +35,20 @@ defmodule PCAPredict.Client do
 
     {:error, data}
   end
+  defp parse_response(%{"Items" => %{"Accuracy" => _accuracy} = items}) do
+    data =
+      items
+      |> Enum.map(fn(item) ->
+        GeocodeItem.new(item)
+      end)
+
+    {:ok, data}
+  end
   defp parse_response(%{"Items" => items}) do
     data =
       items
       |> Enum.map(fn(item) ->
-        Item.new(item)
+        AddressItem.new(item)
       end)
 
     {:ok, data}
